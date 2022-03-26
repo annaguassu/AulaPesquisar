@@ -12,9 +12,32 @@ namespace AulaPesquisar.Controllers
             db = _db;   
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string query, string itembusca)
         {
-            return View();
+            if (string.IsNullOrEmpty(query))
+            {
+                return View(db.PESSOAS.ToList());
+            }
+            else
+            {
+                switch (itembusca)
+                {
+     
+                    case "Nome":
+                        return View(db.PESSOAS.Where(a => a.nome.Contains(query)));
+                    case "Idade":
+                        return View(db.PESSOAS.Where(a => a.idade == query));
+                    case "CPF":
+                        return View(db.PESSOAS.Where(a => a.cpf == query));
+                    case "RG":
+                        return View(db.PESSOAS.Where(a => a.rg == query));
+                    case "Sexo":
+                        return View(db.PESSOAS.Where(a => a.sexo == query));
+                    default:
+                        return View(db.PESSOAS.Where(a => a.nome.Contains(query) || a.idade.Contains(query) || a.cpf.Contains(query)
+                || a.rg.Contains(query) || a.sexo.Contains(query)));
+                }
+            }
         }
     }
 }
